@@ -1,0 +1,3 @@
+package superficial
+
+class Object
