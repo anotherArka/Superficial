@@ -17,7 +17,7 @@ object Morphism {
     val range  = to
   }
 
-  case class Compose(before : Morphism, after : Morphism) extends Morphism {
+  case class Compose(after : Morphism, before : Morphism) extends Morphism {
     require(before.is_composable_with(after), s"$before can not be composed with $after")
     val domain = before.domain
     val range = after.range
