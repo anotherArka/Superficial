@@ -118,7 +118,27 @@ trait Category {cat =>
   val morphisms : Set[Morphism]
   val equality_of_morphism : Equality_of_morphisms
 
-  
+  def id_axiom (f : Morphism) : Category = {
+    val f1 : Morphism = f.+(Category.id_morph(f.range))
+    val f2 : Morphism = (Category.id_morph(f.domain)).+(f)
+    new Category {
+      val objects   = cat.objects
+      val morphisms = cat.morphisms.++(Set(f, f1, f2))
+      val equality_of_morphism = cat.equality_of_morphism.expandWith(Set(f, f1, f2))
+    }
+  }
+
+  def assoc_axiom (f : Morphism, g : Morphism, h : Morphism) : Category = {
+    require(h.is_composable_with(g), s"$h is not composable with $g")
+    require(g.is_composable_with(f), s"$g is not composable with $f")
+    val f1 : Morphism = h.+(g.+(f))
+    val f2 : Morphism = (h.+(g)).+(f)
+    new Category {
+      val objects   = cat.objects
+      val morphisms = cat.morphisms.++(Set(f1, f2))
+      val equality_of_morphism = cat.equality_of_morphism.expandWith(Set(f1, f2))
+    }
+  }
 
 }
 
