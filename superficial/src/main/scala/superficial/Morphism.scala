@@ -9,6 +9,8 @@ trait Morphism { morph =>
   def is_composable_with(next : Morphism) : Boolean = {
     morph.range == next.domain
   }
+
+  def +(before : Morphism) : Morphism = Morphism.Compose(morph, before)
 }
 
 object Morphism {

@@ -18,9 +18,37 @@ trait Model_category { model_cat =>
     val new_morphisms  : Equality_of_morphisms = morphisms
     val new_fibrations   : Set[Morphism] = fibrations
     val new_cofibrations : Set[Morphism] = cofibrations
-    val new_weak_equiv   : Set[Morphism] = if (f.is_composable_with(g)) weak_equiv.+(Compose(g,f)) else weak_equiv
+    val new_weak_equiv   : Set[Morphism] =
+      if (f.is_composable_with(g) && (weak_equiv.contains(f)) && (weak_equiv.contains(g))) {
+        weak_equiv.+(g.+(f))
+      }
+      else weak_equiv
     Model_category.apply(new_morphisms, new_fibrations, new_cofibrations, new_weak_equiv)
   }
+
+  def axiom_2_2(f : Morphism, g : Morphism) : Model_category = {
+    val new_morphisms  : Equality_of_morphisms = morphisms
+    val new_fibrations   : Set[Morphism] = fibrations
+    val new_cofibrations : Set[Morphism] = cofibrations
+    val new_weak_equiv   : Set[Morphism] =
+      if (f.is_composable_with(g) && (weak_equiv.contains(f)) && (weak_equiv.contains(g.+(f)))) {
+        weak_equiv.+(g)
+      }
+      else weak_equiv
+    Model_category.apply(new_morphisms, new_fibrations, new_cofibrations, new_weak_equiv)
+  }
+
+  def axiom_2_3(f : Morphism, g : Morphism) : Model_category = {
+    val new_morphisms  : Equality_of_morphisms = morphisms
+    val new_fibrations   : Set[Morphism] = fibrations
+    val new_cofibrations : Set[Morphism] = cofibrations
+    val new_weak_equiv   : Set[Morphism] =
+      if (f.is_composable_with(g) && (weak_equiv.contains(g)) && (weak_equiv.contains(g.+(f)))) {
+        weak_equiv.+(f)
+      }
+      else weak_equiv
+    Model_category.apply(new_morphisms, new_fibrations, new_cofibrations, new_weak_equiv)
+  } 
 
 }
 
