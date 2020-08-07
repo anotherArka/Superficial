@@ -111,3 +111,34 @@ object Equality_of_morphisms {
     result
   }
 }
+
+trait Category {cat =>
+
+  val objects   : Set[Object]
+  val morphisms : Set[Morphism]
+  val equality_of_morphism : Equality_of_morphisms
+
+  
+
+}
+
+object Category {
+
+  def apply(equality : Equality_of_morphisms) : Category = {
+    val new_morphisms : Set[Morphism] = equality.morphisms.flatMap(el => el)
+    val domains       : Set[Object]   = new_morphisms.map(_.domain)
+    val ranges        : Set[Object]   = new_morphisms.map(_.range)
+    val new_objects   : Set[Object]   = domains.++(ranges)
+    
+    new Category {
+      val objects   : Set[Object]   = new_objects
+      val morphisms : Set[Morphism] = new_morphisms
+      val equality_of_morphism : Equality_of_morphisms = equality
+    }
+  }
+
+  case class id_morph (obj : Object) extends Morphism {
+    val domain : Object = obj
+    val range  : Object = obj
+  }
+}
