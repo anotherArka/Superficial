@@ -120,12 +120,15 @@ trait Category {cat =>
   val equality_of_morphism : Equality_of_morphisms
 
   def id_axiom (f : Morphism) : Category = {
-    val f1 : Morphism = f.+(Category.id_morph(f.domain))
-    val f2 : Morphism = (Category.id_morph(f.range)).+(f)
+    val i1 : Morphism = Category.id_morph(f.domain)
+    val i2 : Morphism = Category.id_morph(f.range)
+    val f1 : Morphism = f.+(i1)
+    val f2 : Morphism = (i2).+(f)
     new Category {
       val objects   = cat.objects
       val morphisms = cat.morphisms.++(Set(f, f1, f2))
-      val equality_of_morphism = cat.equality_of_morphism.expandWith(Set(f, f1, f2))
+      val equality_of_morphism = cat.equality_of_morphism.merge(
+        Equality_of_morphisms.apply(Set(Set(f, f1, f2), Set(i1), Set(i2))))
     }
   }
 
@@ -143,7 +146,60 @@ trait Category {cat =>
 
   def random_extend : Category = {
     val f : Morphism = Helper.random(cat.morphisms)
-    cat.id_axiom(f)  
+    val intermediate = cat.id_axiom(f)
+
+    val g : Morphism = Helper.random(cat.morphisms.filter(k => k.is_composable_with(f)))
+    val h : Morphism = Helper.random(cat.morphisms.filter(k => k.is_composable_with(g)))
+    
+    intermediate.assoc_axiom(f, g, h)
+  }
+
+  def complete_with_id_helper(remaining: List[Morphism]) : Category = {
+    remaining match {
+      case Nil => cat
+      case (f :: fs) => cat.id_axiom(f).complete_with_id_helper(fs)
+    }
+  }
+
+  def complete_with_id(n : Int) : Category = {
+    if (n > 0) cat.complete_with_id_helper(cat.morphisms.toList).complete_with_id(n-1)
+    else cat
+  }
+
+  def complete_with_assoc_helper(first : List[Morphism], second : List[Morphism], third : List[Morphism],
+    full_list : List[Morphism]) : Category = {
+    first match {
+      case Nil => cat
+      case (f :: fs) => {
+        second match {
+          case Nil => cat.complete_with_assoc_helper(fs, full_list, full_list, full_list)
+          case (g :: gs) => {
+            third match {
+              case Nil => cat.complete_with_assoc_helper((f :: fs), gs, full_list, full_list)
+              case (h :: hs) => {
+                if (g.is_composable_with(f) && h.is_composable_with(g)) {
+                  cat.assoc_axiom(f, g, h).complete_with_assoc_helper(f :: fs, g :: gs, hs, full_list)
+                }
+                else cat.complete_with_assoc_helper(f :: fs, g :: gs, hs, full_list)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  def complete_with_assoc(n : Int) : Category = {
+    if (n > 0) {
+      val morph_list : List[Morphism] = cat.morphisms.toList
+      cat.complete_with_assoc_helper(morph_list, morph_list, morph_list, morph_list).complete_with_assoc(n-1)
+    }
+    else cat
+  }
+
+  def random_extend_times(n : Integer) : Category = {
+    if (n > 1) (cat.random_extend).random_extend_times(n - 1)
+    else cat
   }
 
 }
@@ -155,10 +211,11 @@ object Category {
     val domains       : Set[Object]   = new_morphisms.map(_.domain)
     val ranges        : Set[Object]   = new_morphisms.map(_.range)
     val new_objects   : Set[Object]   = domains.++(ranges)
+    val new_id        : Set[Morphism] = new_objects.map(a => id_morph(a))
     
     new Category {
       val objects   : Set[Object]   = new_objects
-      val morphisms : Set[Morphism] = new_morphisms
+      val morphisms : Set[Morphism] = new_morphisms.++(new_id)
       val equality_of_morphism : Equality_of_morphisms = equality
     }
   }

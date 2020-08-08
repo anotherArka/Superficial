@@ -6,8 +6,8 @@ trait Morphism { morph =>
   val domain : Object
   val range  : Object
 
-  def is_composable_with(next : Morphism) : Boolean = {
-    morph.range == next.domain
+  def is_composable_with(before : Morphism) : Boolean = {
+    morph.domain == before.range
   }
 
   def +(before : Morphism) : Morphism = Morphism.Compose(morph, before)
@@ -20,7 +20,7 @@ object Morphism {
   }
 
   case class Compose(after : Morphism, before : Morphism) extends Morphism {
-    require(before.is_composable_with(after), s"$before can not be composed with $after")
+    require(after.is_composable_with(before), s"$after can not be composed with $before")
     val domain = before.domain
     val range = after.range
   }
