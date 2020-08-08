@@ -14,7 +14,7 @@ trait Morphism { morph =>
 }
 
 object Morphism {
-  case class Atomic(from : Object, to : Object) extends Morphism {
+  class Atomic(from : Object, to : Object) extends Morphism {
     val domain = from
     val range  = to
   }

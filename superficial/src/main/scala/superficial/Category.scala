@@ -2,6 +2,7 @@ package superficial
 
 import Object._
 import Morphism._
+import Helper._
 
 trait Morphism_class { morph_class =>
    val domain : Object
@@ -119,8 +120,8 @@ trait Category {cat =>
   val equality_of_morphism : Equality_of_morphisms
 
   def id_axiom (f : Morphism) : Category = {
-    val f1 : Morphism = f.+(Category.id_morph(f.range))
-    val f2 : Morphism = (Category.id_morph(f.domain)).+(f)
+    val f1 : Morphism = f.+(Category.id_morph(f.domain))
+    val f2 : Morphism = (Category.id_morph(f.range)).+(f)
     new Category {
       val objects   = cat.objects
       val morphisms = cat.morphisms.++(Set(f, f1, f2))
@@ -138,6 +139,11 @@ trait Category {cat =>
       val morphisms = cat.morphisms.++(Set(f1, f2))
       val equality_of_morphism = cat.equality_of_morphism.expandWith(Set(f1, f2))
     }
+  }
+
+  def random_extend : Category = {
+    val f : Morphism = Helper.random(cat.morphisms)
+    cat.id_axiom(f)  
   }
 
 }
