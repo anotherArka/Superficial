@@ -23,5 +23,5 @@ object Morphism {
     require(after.is_composable_with(before), s"$after can not be composed with $before")
     val domain = before.domain
     val range = after.range
-  }
+  } 
 }

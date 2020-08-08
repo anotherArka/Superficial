@@ -1,8 +1,9 @@
 package superficial
 
 import Morphism._
-import Equality_of_morphisms._
+// import Equality_of_morphisms._
 
+/**
 // we have to define methods to make sure that if f is inside weak_equiv/fibrations/cofibrations and
 // f ~ g according to morphisms then g is also inside weak_equiv/fibrations/cofibrations
 trait Model_category { model_cat =>
@@ -61,3 +62,4 @@ object Model_category {
       val cofibrations = cofib
   }
 }
+*/

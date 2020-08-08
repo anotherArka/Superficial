@@ -3,7 +3,7 @@ package superficial
 import Object._
 import Morphism._
 import Helper._
-
+/*
 trait Morphism_class { morph_class =>
    val domain : Object
    val range  : Object
@@ -225,3 +225,4 @@ object Category {
     val range  : Object = obj
   }
 }
+*/

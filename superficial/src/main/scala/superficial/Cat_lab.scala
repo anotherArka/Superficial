@@ -1,9 +1,9 @@
 package superficial
 
 import Morphism._
-import Equality_of_morphisms._
-import Category._
-
+//import Equality_of_morphisms._
+//import Category._
+/**
 object Cat_lab {
   val a : Object = new Object()
   val b : Object = new Object()
@@ -19,3 +19,4 @@ object Cat_lab {
   val Eq_C : Equality_of_morphisms = Equality_of_morphisms.apply(Set(Set(f), Set(g), Set(h), Set(k)))
   val C : Category = Category.apply(Eq_C)
 }
+*/
