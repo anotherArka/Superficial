@@ -1,5 +1,7 @@
 package superficial
 
+import Morphism._
+
 trait Equivalence_class[T] {eq_class =>
   var partition : Set[Set[T]] = Set()
 
@@ -14,6 +16,14 @@ trait Equivalence_class[T] {eq_class =>
       (eq_class.partition.filter(_.contains(el)).size != 1)).size == 0)
   }
 
+  def are_equal(a : T, b : T) : Boolean = {
+    val result : Boolean = partition.find(el => (el.contains(a) && el.contains(b))) match {
+      case None => false
+      case Some(c) => true
+    }
+    result
+  }
+ 
   def delete(to_delete : List[Set[T]]) : Unit = {
     to_delete match {
       case Nil => {}
@@ -45,4 +55,13 @@ trait Equivalence_class[T] {eq_class =>
       eq_class.add_list(full_list)
       require(eq_class.is_well_defined, s"$eq_class is not well defined")
     }
+}
+
+object Equivalence_class {
+
+  def apply(start_with : List[Set[Morphism]]) : Equivalence_class[Morphism] = {
+    var result : Equivalence_class[Morphism] = new Equivalence_class[Morphism]{}
+    result.add_list(start_with.toList)
+    result
+  }
 }
