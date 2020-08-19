@@ -18,7 +18,7 @@ trait Equivalence_class[T] {eq_class =>
 
   def are_equal(a : T, b : T) : Boolean = {
     val result : Boolean = partition.find(el => (el.contains(a) && el.contains(b))) match {
-      case None => false
+      case None => (a == b)
       case Some(c) => true
     }
     result

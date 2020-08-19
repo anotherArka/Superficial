@@ -22,3 +22,19 @@ object Cat_lab {
     var equality_of_morphisms : Equivalence_class[Morphism] = Equivalence_class.apply(List())
   }
 }
+
+/*
+object Exp_lemma_1 {
+  val u : Object = new Object()
+  val x : Object = new Object()
+  val v : Object = new Object()
+  val y : Object = new Object()
+
+  val alpha : Morphism = new Atomic(u, x)
+  val p     : Morphism = new Atomic(x, y)
+  val beta  : Morphism = new Atomic(v, y)
+  val i     : Morphism = new Atomic(u, v)
+
+  val C = new Category 
+}
+*/
