@@ -9,6 +9,52 @@ trait Model extends Category { model =>
   var cofib     : Set[Morphism]
   var weak_eqv  : Set[Morphism]
 
+  /**
+   *    f.domain
+   *       |
+   *     i |
+   *       |
+   *       \/
+   *       c --------> f.range
+   *             p
+   */
+  def axiom_5_1(f : Morphism) : Unit = {
+    require(model.morphisms.contains(f), s"$f is not a morphism in $model")
+    val c : Object   = new Object() 
+    val i : Morphism = new Atomic(f.domain, c)
+    val p : Morphism = new Atomic(c, f.range)
+    
+    model.morphisms += p
+    model.morphisms += i
+    model.fib       += p
+    model.cofib     += i
+    model.weak_eqv  += i
+    model.equality_of_morphisms.add(Set(p.+(i), f))
+  }
+
+  /**
+   *    f.domain
+   *       |
+   *     j |
+   *       |
+   *       \/
+   *       c --------> f.range
+   *             q
+   */
+  def axiom_5_2(f : Morphism) : Unit = {
+    require(model.morphisms.contains(f), s"$f is not a morphism in $model")
+    val c : Object   = new Object() 
+    val j : Morphism = new Atomic(f.domain, c)
+    val q : Morphism = new Atomic(c, f.range)
+    
+    model.morphisms += q
+    model.morphisms += j
+    model.fib       += q
+    model.cofib     += j
+    model.weak_eqv  += q
+    model.equality_of_morphisms.add(Set(q.+(j), f))
+  }
+
   /**        a
    *     u ----> x
    *   i |       | p

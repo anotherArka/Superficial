@@ -1,2 +1,2 @@
-import $cp.bin.`superficial-2c09ee10e1.jar`
+import $cp.bin.`superficial-d2e11075e6.jar`
 import superficial._
