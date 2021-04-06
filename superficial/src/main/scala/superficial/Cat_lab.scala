@@ -3,6 +3,7 @@ package superficial
 import Morphism._
 import Equivalence_class._
 import Category._
+import Model._
 
 object Cat_lab {
   val a : Object = new Object()
@@ -23,8 +24,8 @@ object Cat_lab {
   }
 }
 
-/*
-object Exp_lemma_1 {
+
+object Lemma_1a1 {
   val u : Object = new Object()
   val x : Object = new Object()
   val v : Object = new Object()
@@ -35,6 +36,15 @@ object Exp_lemma_1 {
   val beta  : Morphism = new Atomic(v, y)
   val i     : Morphism = new Atomic(u, v)
 
-  val C = new Category 
+  val C : Model = Model(Set(Set(alpha), Set(p), Set(beta), Set(i), Set(p.+(alpha), beta.+(i))), Set(p), Set(i), Set(p)) 
 }
-*/
+
+object Lemma_1a2 {
+  val u : Object = new Object()
+  val v : Object = new Object()
+
+  val i : Morphism = new Atomic(u, v)
+  
+  // def left_lifting
+
+}

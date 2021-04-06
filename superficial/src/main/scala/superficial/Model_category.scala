@@ -94,7 +94,7 @@ trait Model extends Category { model =>
    *     v ----> y
    *         b
    */
-  def axiom_4(a : Morphism, b : Morphism, i : Morphism, p : Morphism) : Unit = {
+  def axiom_4(a : Morphism, b : Morphism, i : Morphism, p : Morphism) : Morphism = {
 
     require(model.are_equal(p.+(a), b.+(i)), s"The diagram does not commute")
     require(model.cofib.contains(i), s"$i is not a cofibration")
@@ -107,9 +107,11 @@ trait Model extends Category { model =>
     model.morphisms += t.+(i)
     model.equality_of_morphisms.add(Set(p.+(t), b))
     model.equality_of_morphisms.add(Set(t.+(i), a))
+
+    return t
   }
 
-  def axiom_5_1(f : Morphism) : Unit = {
+  def axiom_5_1(f : Morphism) : (Morphism, Morphism) = {
     require(model.morphisms.contains(f), s"$f is not a morphism in $model")
     val c : Object   = new Object() 
     val i : Morphism = new Atomic(f.domain, c)
@@ -121,6 +123,8 @@ trait Model extends Category { model =>
     model.cofib     += i
     model.weak_eqv  += i
     model.equality_of_morphisms.add(Set(p.+(i), f))
+
+    return (p, i)
   }
 
   /**
@@ -132,7 +136,7 @@ trait Model extends Category { model =>
    *       c --------> f.range
    *             q
    */
-  def axiom_5_2(f : Morphism) : Unit = {
+  def axiom_5_2(f : Morphism) : (Morphism, Morphism) = {
     require(model.morphisms.contains(f), s"$f is not a morphism in $model")
     val c : Object   = new Object() 
     val j : Morphism = new Atomic(f.domain, c)
@@ -144,6 +148,8 @@ trait Model extends Category { model =>
     model.cofib     += j
     model.weak_eqv  += q
     model.equality_of_morphisms.add(Set(q.+(j), f))
+
+    return (q, j)
   }
 }
 
